@@ -2,10 +2,7 @@
 # Written by: Ksenia Burova
 #
 # The Goal is to calculate 'w' vector
-
-from random import uniform
 import math
-import copy
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -18,7 +15,7 @@ class MultRegression:
     w = []     # weights
     r = []     # function output (mpg)
     names = []
-
+    missingLines = []
     # Read all the data from a file, split all into r and  x1, x2, x3 ...xn
     #   r   1. mpg:           continuous
     #   x1  2. cylinders:     multi-valued discrete
@@ -29,11 +26,11 @@ class MultRegression:
     #   x6  7. model year:    multi-valued discrete
     #   x7  8. origin:        multi-valued discrete
     #       9. car name:      string (unique for each instance)
-    def __init__(self, filename, toStandardize):
+    def __init__(self, filename, toStandardize, toIgnore):
         for line in open(filename, 'r').readlines():
             values = line.split()
             if values[3] == '?':
-                continue
+                self.missingLines.append(line)
             else:
                 self.X.append(list(map(float, values[1:8])))
                 self.names.append(' '.join(values[8:]).replace('"', ''))
@@ -42,6 +39,17 @@ class MultRegression:
             # self.r.append(float(values[0]))
 
         self.XT = np.array(self.X).transpose()
+
+        if toIgnore == 0:
+            self.mean()
+            newVal = self.M[2]   #horsepower mean
+            for line in self.missingLines:
+                values = line.split()
+                values[3] = newVal
+                self.X.append(list(map(float, values[1:8])))
+                self.names.append(' '.join(values[8:]).replace('"', ''))
+                self.r.append(float(values[0]))
+            self.XT = np.array(self.X).transpose()
 
         # Do data standardization if requested
         if toStandardize == 1:
@@ -61,7 +69,8 @@ class MultRegression:
 
     def standardize(self):
         stdX = []
-        self.mean()
+        if len(self.M) == 0:
+            self.mean()
         self.stdDev()
 
         for i, x in enumerate(self.XT):

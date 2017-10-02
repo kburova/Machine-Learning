@@ -7,6 +7,6 @@
 
 from LinReg import *
 
-mr = MultRegression('auto-mpg.data', 1)
+mr = MultRegression('auto-mpg.data', 1, 1)
 
 mr.calcW()
