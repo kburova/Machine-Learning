@@ -4,7 +4,7 @@
 # The Goal is to calculate 'w' vector
 import math
 import numpy as np
-import matplotlib.pyplot as plt
+
 
 class MultRegression:
     X = []     # Data, where each line has all params for one r_i (x1^i, x2^i....xn^i)
@@ -74,7 +74,7 @@ class MultRegression:
         self.stdDev()
 
         for i, x in enumerate(self.XT):
-            x1 = (np.fabs(np.array(x) - self.M[i])) / self.stdD[i]
+            x1 = (np.array(x) - self.M[i]) / self.stdD[i]
             stdX.append(x1)
 
         self.XT = np.array(stdX)

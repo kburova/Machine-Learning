@@ -16,7 +16,7 @@
 \begin{document}
 \maketitle
 
-\noindent {\bf Abstract:} In machine learning, multiple regression is a function if multiple inputs (discrete or numeric), that has one output that is a class code or continuous value. \\
+\noindent {\bf Abstract:} In machine learning, multiple regression is a function of multiple inputs (discrete or numeric), that has one output that is a class code or continuous value. \\
 In this project, the goal was to predict the gas milage of automobiles from their other multiple attributes by using multiple linear regression. We were given two files, one with data and another one with attribute information for that data. Six values for horsepower were missing, and had to be skipped or predicted. Data attributes contained both, discrete and numeric values. We had to compare performance of data with and without standardization. After calculating weights, we had to analyze which attribute was the best in predicting gas milage. 
 
 \begin{enumerate}[label=\Roman*.]
@@ -50,7 +50,6 @@ In this project, the goal was to predict the gas milage of automobiles from thei
 	(Equations are copied from the textbook) \\
 	
 	Going back to multiple regression, our numeric output is vector {\it r} which represents milage attribute.  We have a weighted sum of attributes \( x_1, x_2 ... x_d\) and some noise.  \\
-	
 	Here is a multivariate linear model: \\
 	\includegraphics[scale=0.5]{pics/model.png} \\
 	We may assume error to be normal with mean 0 and constant variance. To maximize the likelihood we will minimize the sum of squared errors: \\
@@ -76,6 +75,29 @@ In this project, the goal was to predict the gas milage of automobiles from thei
 	\end{enumerate}
 	I've tested my functions on smaller data examples and matrices before running it on givven data.
 	
+	{\bf \item Expectations} \\
+	
+	Before running my experiment I decided to look at all the given attributes to figure out what effect on gas milage those can possibly have. These were my expectations:
+	\begin{itemize}
+		{\bf \item Cylinders + Displacement} \\
+		Displacement is how much air engine consumes, and more air it consumes more gas get consumed as well. Displacement pretty much depends on number of cylinders in a car, as we see:\\  
+		\includegraphics[scale=0.7]{pics/1.png} \\
+		So, with both of these parameters increasing, out gas milage should be decreased.
+		
+		{\bf \item Weight + Horsepower} \\
+		Weight of the car means a lot too. Heavier the car then harder that motor has to work.So I would expect this parameter to have the most negative effect on milage. Also, to increase the ability of motor to handle more work we have to increase its horsepower parameter. So greater weight would probably cause in bigger horsepower for that car. \\
+		\includegraphics[scale=0.7]{pics/2.png} \\
+		So If car has a bigger weight and the engine has to do more work then heavier cars should have lower milage. But is it when car doesn't have enough horsepowers? Will have to see. I think it depends. I think if horsepower attribute is hight enough for car's weight , weight affect should be fine. But now, greater horsepower might involve something else in engine construction that would probable eat up a bit more gas.
+		
+		{\bf \item Acceleration} \\
+		I think higher acceleration should cause in lower milage, can't really explain why as I'm not a car  specialist. Intuitively,  when we speed up engine has to work harder to move the car forward faster. We have to apply some power that we have to get from gas.\\
+		
+		{\bf \item Model Year + Origin} \\
+		I really don't know what to expect from these two attributes. I would assume that newer cars have better  transmissions and thus more efficient gas usage. Something similar may be going on with origin. \\
+		Overall, I expect all parameters to have some effect on gas milage in a negative way. And all of these may depend on each other overall. 
+		
+	\end{itemize}
+	
 	{\bf \item Results} \\
 	
 	The first time I ran my program I skipped lines with missing attributes and I didn't standardize parameters. I received following values for weights:
@@ -83,22 +105,31 @@ In this project, the goal was to predict the gas milage of automobiles from thei
 	[ -1.80586717e+01  -4.18254893e-01   1.88870416e-02  -1.13851962e-02
   	-6.71865820e-03    1.02620868e-01   7.56755050e-01   1.41751561e+00]
 	\end{verbatim}
-	It is really hard to analyze these values since attributes that were expected to have negative effect on milage have a corresponding weight with positive sign, like car displacement. More horsepower and cylinders do have a negative effect on milage, as expected. It is hard to analyze absolute values though. \\
-	Usually data standardization is needed when we use attributes of different types that have different value ranges. Here are results after standardization:
+	It is really hard to analyze these values since they are so little, it's hard to say if value is close to 0 or not and that's the case when attribute has almost no affect on dependent variable. Also different data types and ranges my cause in sign switch for coefficients. So, usually data standardization is needed when we use attributes of different types that have different value ranges. Here are results after standardization:
 	\begin{verbatim}
-	[ 20.37880831  -5.00325077  -2.37809451  -0.7357686    
-	 2.30248253     0.4401979     3.09178799   6.02984611]
+	[ 23.45731655  -0.71059527   1.96696134  -0.43435854  
+	 -5.68269173  0.28265403   2.79477515   1.135508]
 	\end{verbatim}
-	We can see that number of cylinders, car displacement and horsepower have negative effects on gas milage, as expected. Where other attributes have a more positive effect. it is possible, that newer car would have greater gas milage, so results look fine so far.
+	
+	Seems like Cylinders and Horsepower have some negative effect on gas milage, and weight has the biggest one, as expected. Other parameters seem to have positive effect, which I expected only for year and origin. Acceleration value is very small any way, I wonder if it has something to do with other parameters for it to be positive. Or maybe I didn't understand its meaning correctly.  Displacement also was expected to have negative effect but here displacement depends on cylinders very much and may be it has something to do with that. The order in which attributes have the most affect is the following:\\
+	
+	{\bf Acceleration, Horsepower, Cylinders, Origin, Displacement, Year , Weight. }\\
+	
+	So, weight of the car is probably a key factor in calculating gas milage which makes sense, the workflow of other car parts may depend on energy that engine has to produce. Same with year, newer cars are expected to be more efficient in gas usage.\\
+	
 	Now, I estimated horsepower for samples with missing values and added those:
 	\begin{verbatim}
-	[ 20.36175876  -4.70649111  -3.1073928   -0.05821537
-	   1.98385778   0.43863716   2.88210938   6.30068179]
+	[ 23.44591837  -0.84051891   2.07930256  -0.65163644  
+	-5.49205044   0.22201407   2.76211888   1.14731588]
 	\end{verbatim}
-	The absolute values have changed, looking at absolute values of weights corresponding to horsepower we can assume now that that attribute is almost useless in predicting milage, which can't be really true. So sometimes, it is better to remove values from data than estimate values that may influence results in negative way. Or maybe better predicting algorithm should be used like imputation by regression to get better estimated values with less noise.
 	
-	Now let's look at plots for given data: \\
-	\includegraphics[scale=0.45]{pics/contplots.png} \\
+	Values didn't change much in sign. Attributes effect negativity is still the same. The absolute values for some attributes have changed. Horsepower has a little more affect on milage. But there is no garantee
+	that we estimated those missing values correctly, so probably this result has more noise than previous.
+		
+	Now let's draw a plot of milage(weight, year) for given data: \\
+	\includegraphics[scale=0.8]{pics/4.png} \\
+	
+	The color shift to red shows, how increasing car weight decrease milage, at the same time if look at year and milage, milage is higher for a bigger year.
 	
 \end{enumerate}
 	

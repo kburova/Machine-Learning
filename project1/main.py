@@ -8,5 +8,5 @@
 from LinReg import *
 
 mr = MultRegression('auto-mpg.data', 1, 1)
-
+print (mr.stdD)
 mr.calcW()

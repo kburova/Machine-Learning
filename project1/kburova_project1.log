@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  2 OCT 2017 00:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  4 OCT 2017 17:10
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1093,86 +1093,119 @@ Underfull \hbox (badness 10000) in paragraph at lines 49--51
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
-
- []
-
 <pics/model.png, id=17, 593.21625pt x 47.17625pt>
 File: pics/model.png Graphic file (type png)
  <use pics/model.png>
-Package pdftex.def Info: pics/model.png used on input line 55.
+Package pdftex.def Info: pics/model.png used on input line 54.
 (pdftex.def)             Requested size: 296.60739pt x 23.58806pt.
 
 <pics/errors.png, id=18, 601.24625pt x 60.225pt>
 File: pics/errors.png Graphic file (type png)
  <use pics/errors.png>
-Package pdftex.def Info: pics/errors.png used on input line 57.
+Package pdftex.def Info: pics/errors.png used on input line 56.
 (pdftex.def)             Requested size: 300.62238pt x 30.11241pt.
 
 <pics/normal.png, id=19, 603.25375pt x 241.90375pt>
 File: pics/normal.png Graphic file (type png)
  <use pics/normal.png>
-Package pdftex.def Info: pics/normal.png used on input line 59.
+Package pdftex.def Info: pics/normal.png used on input line 58.
 (pdftex.def)             Requested size: 301.62613pt x 120.95157pt.
 
 <pics/attr.png, id=20, 537.00626pt x 142.5325pt>
 File: pics/attr.png Graphic file (type png)
  <use pics/attr.png>
-Package pdftex.def Info: pics/attr.png used on input line 61.
+Package pdftex.def Info: pics/attr.png used on input line 60.
 (pdftex.def)             Requested size: 268.50247pt x 71.26607pt.
 
 <pics/eq.png, id=21, 123.46124pt x 40.15pt>
 File: pics/eq.png Graphic file (type png)
  <use pics/eq.png>
-Package pdftex.def Info: pics/eq.png used on input line 63.
+Package pdftex.def Info: pics/eq.png used on input line 62.
 (pdftex.def)             Requested size: 61.73045pt x 20.07494pt.
 
 <pics/weights.png, id=22, 162.6075pt x 41.15375pt>
 File: pics/weights.png Graphic file (type png)
  <use pics/weights.png>
-Package pdftex.def Info: pics/weights.png used on input line 65.
+Package pdftex.def Info: pics/weights.png used on input line 64.
 (pdftex.def)             Requested size: 81.30354pt x 20.57681pt.
 
 [2 <./pics/model.png> <./pics/errors.png> <./pics/normal.png> <./pics/attr.png>
-]
-Underfull \hbox (badness 10000) in paragraph at lines 68--72
+ <./pics/eq.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 67--71
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 79--80
+Underfull \hbox (badness 10000) in paragraph at lines 78--79
 
  []
 
-[3 <./pics/eq.png> <./pics/weights.png>]
-<pics/contplots.png, id=40, 974.64125pt x 726.715pt>
-File: pics/contplots.png Graphic file (type png)
- <use pics/contplots.png>
-Package pdftex.def Info: pics/contplots.png used on input line 101.
-(pdftex.def)             Requested size: 438.5845pt x 327.01872pt.
+LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 82.
+<pics/1.png, id=35, 357.335pt x 209.78375pt>
+File: pics/1.png Graphic file (type png)
+ <use pics/1.png>
+Package pdftex.def Info: pics/1.png used on input line 84.
+(pdftex.def)             Requested size: 250.13278pt x 146.84761pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 100--102
+<pics/2.png, id=36, 352.31625pt x 209.78375pt>
+File: pics/2.png Graphic file (type png)
+ <use pics/2.png>
+Package pdftex.def Info: pics/2.png used on input line 89.
+(pdftex.def)             Requested size: 246.61969pt x 146.84761pt.
+ [3 <./pics/weights.png> <./pics/1.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 92--94
 
  []
 
-[4 <./pics/contplots.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 105.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 105.
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--102
+
+ []
+
+[4 <./pics/2.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 114--115
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 116--117
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 118--119
+
+ []
+
+<pics/4.png, id=48, 476.78125pt x 394.47375pt>
+File: pics/4.png Graphic file (type png)
+ <use pics/4.png>
+Package pdftex.def Info: pics/4.png used on input line 130.
+(pdftex.def)             Requested size: 381.4255pt x 315.57942pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--131
+
+ []
+
+[5] [6 <./pics/4.png>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 136.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 136.
  (./kburova_project1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 105.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 105.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 105.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 136.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 136.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 136.
  ) 
 Here is how much of TeX's memory you used:
- 24772 strings out of 492995
- 617716 string characters out of 6132704
- 802216 words of memory out of 5000000
- 27880 multiletter control sequences out of 15000+600000
- 12006 words of font info for 47 fonts, out of 8000000 for 9000
+ 24785 strings out of 492995
+ 617841 string characters out of 6132704
+ 800218 words of memory out of 5000000
+ 27890 multiletter control sequences out of 15000+600000
+ 12261 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  62i,6n,96p,741b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pf
+b></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb><
 /usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></u
@@ -1182,10 +1215,10 @@ ocal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/loca
 l/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local
 /texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/
 texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on kburova_project1.pdf (4 pages, 211080 bytes).
+Output written on kburova_project1.pdf (6 pages, 209506 bytes).
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
- 44 compressed objects within 1 object stream
+ 91 PDF objects out of 1000 (max. 8388607)
+ 51 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 53 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 63 words of extra memory for PDF output out of 10000 (max. 10000000)
 
