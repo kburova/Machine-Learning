@@ -14,7 +14,7 @@ class dr:
     s = np.array(())
     V = np.array(())
 
-    # reduced data
+    # 2pcs-reduced data
     Z = np.array(())
 
     def __init__(self, filename):
@@ -51,6 +51,13 @@ class dr:
         plt.xlabel('Singular Values #')
         plt.savefig('scree.png')
 
+        plt.clf()
+        plt.xlabel("Years")
+        plt.ylabel("Death # per 1000")
+        cmap = plt.cm.get_cmap('hsv', 180)
+        for i in range(0, len(self.countries)):
+            plt.plot(self.years, self.data[len(self.data)-i-1], color=cmap(i), linewidth=0.5 )
+        plt.savefig('data.png')
         self.reduce(k)
 
     # reduce pca
@@ -63,11 +70,26 @@ class dr:
         plt.figure(2)
         plt.xlabel('PC 1')
         plt.ylabel('PC 2')
-        plt.scatter(self.Z[:, 0], self.Z[:, 1], color='purple', marker='*')
-        plt.savefig('scatterPCs.png')
+        plt.scatter(self.Z[:, 0], self.Z[:, 1], color='red', marker='*')
+        plt.savefig('scatter_pcs1.png')
+        for i, c in enumerate(self.countries):
+            plt.annotate(c, (self.Z[i, 0], self.Z[i, 1]), fontsize=7)
+        plt.savefig('scatter_pcs.png')
+
+        # draw PCs vs. year
+        plt.clf()
+        plt.xlabel('Year')
+        plt.ylabel('Eigen vectors')
+        plt.scatter(self.years, self.V[:, 0], color='teal', marker="s")
+        plt.scatter(self.years, self.V[:, 1], color='plum', marker="s")
+        plt.savefig('pcs_year.png')
 
 # K-means is fast O(#iter * #clusters * #instences * #dimentions)
-def kmean(k, data):
+
+def kmean(k, data, key, z):
+    # plot cluster
+    colors = ['pink', 'purple', 'orange', 'gold', 'green', 'blue', 'red']
+    clusters = []
     m = []
     num_of_iter = 0
     MAX = 10000
@@ -106,28 +128,135 @@ def kmean(k, data):
 
         m = m_new
 
-    # plot cluster
-    colors = ['pink', 'purple', 'orange', 'yellow', 'green', 'blue', 'red']
+    # plt.figure(3)
+    # plt.clf()
+    # plt.xlabel('PC 1')
+    # plt.ylabel('PC 2')
 
-    plt.figure(3)
-    plt.xlabel('PC 1')
-    plt.ylabel('PC 2')
+    # color the scatter plot by clusters
+    for i in range(len(z)):
+        plt.scatter(z[i, 0], z[i, 1], color=colors[b[i]], marker='*')
 
-    for i, d in enumerate(data):
-        plt.scatter(d[0], d[1], color=colors[b[i]], marker='*')
-
-    plt.savefig('Clusters.png')
-
+    # filename = 'clusters_'+key+str(k)+'.png'
+    # plt.savefig(filename)
 
     if num_of_iter == MAX:
         print("Too many iterations", num_of_iter)
     else:
         print("Converged", num_of_iter)
 
+    # get dunn index
+    return [dunn_index(clusters), num_of_iter]
+
+
+def dunn_index(clusters):
+    intra = []
+    inter = []
+
+    for i, c in enumerate(clusters):
+        # calculate intra distance within each cluster
+        if len(c) == 1:
+            intra.append(0)
+            continue
+        dist = []
+        x1 = 0
+        while x1 < (len(c)-1):
+            x2 = x1+1
+            while x2 < len(c):
+                dist.append(np.linalg.norm(np.array(c[x1]) - np.array(c[x2])))
+                x2 += 1
+            x1 += 1
+        intra.append(max(dist))
+
+        # calculate inter distance within all clusters
+        for j in range(i+1, len(clusters)):
+            mean1 = list(np.mean(clusters[i], axis=0))
+            mean2 = list(np.mean(clusters[j], axis=0))
+            inter.append(np.linalg.norm(np.array(mean1) - np.array(mean2)))
+
+    return min(inter)/max(intra)
+
+
+def run_experiment():
+
+    # initialize data
+    d = dr('under5mortalityper1000.csv')
+    d.pca(2)
+    r = np.matmul(d.data, d.V)
+    raw = []
+    pc2 = []
+    pcs = []
+    ind = range(2,8)
+
+    plt.figure(3, figsize=(10, 15))
+    plt.clf()
+    plt.title("Raw data")
+    for k in range(2,8):
+        plt.subplot(320+k-1)
+        raw.append(kmean(k, d.data, 'raw', d.Z))
+        plt.xlabel('PC 1')
+        plt.ylabel('PC 2')
+        plt.title(str(k) + 'clusters')
+    filename = 'clusters_raw.png'
+    plt.savefig(filename)
+
+    plt.clf()
+    plt.title("2 PCs data")
+    for k in range(2, 8):
+        plt.subplot(320 + k - 1)
+        pc2.append(kmean(k, d.Z, '2pcs', d.Z))
+        plt.xlabel('PC 1')
+        plt.ylabel('PC 2')
+        plt.title(str(k) + 'clusters')
+    filename = 'clusters_2pcs.png'
+    plt.savefig(filename)
+
+    plt.clf()
+    plt.title("k PCs data")
+    for k in range(2, 8):
+        plt.subplot(320 + k - 1)
+        pcs.append(kmean(k, r, 'pcs', d.Z))
+        plt.xlabel('PC 1')
+        plt.ylabel('PC 2')
+        plt.title(str(k) + 'clusters')
+    filename = 'clusters_kpcs.png'
+    plt.savefig(filename)
+
+    plt.clf()
+    plt.subplot(211)
+    plt.plot(ind, np.array(raw)[:, 0], marker='+', linestyle='-', color='blue', markersize=4)
+    plt.ylabel('Dunn Index')
+
+    plt.subplot(212)
+    plt.plot(ind, np.array(raw)[:, 1], marker='+', linestyle='-', color='green', markersize=4)
+    plt.ylabel('Number of Iterations')
+    plt.xlabel('Number of Clusters')
+
+    plt.savefig('dun_raw.png')
+
+    plt.clf()
+    plt.subplot(211)
+    plt.plot(ind, np.array(pc2)[:, 0], marker='+', linestyle='-', color='blue', markersize=4)
+    plt.ylabel('Dunn Index')
+
+    plt.subplot(212)
+    plt.plot(ind, np.array(pc2)[:, 1], marker='+', linestyle='-', color='green', markersize=4)
+    plt.ylabel('Number of Iterations')
+    plt.xlabel('Number of Clusters')
+
+    plt.savefig('dun_pc2.png')
+
+    plt.clf()
+    plt.subplot(211)
+    plt.plot(ind, np.array(pcs)[:, 0], marker='+', linestyle='-', color='blue', markersize=4)
+    plt.ylabel('Dunn Index')
+
+    plt.subplot(212)
+    plt.plot(ind, np.array(pcs)[:, 1], marker='+', linestyle='-', color='green', markersize=4)
+    plt.ylabel('Number of Iterations')
+    plt.xlabel('Number of Clusters')
+
+    plt.savefig('dun_kpcs.png')
 # Creating instance of the class and calling functions...
 # --------------------------------------------------------
-
-d = dr('under5mortalityper1000.csv')
-d.pca(2)
-
-kmean(6, d.Z)
+run_experiment()
