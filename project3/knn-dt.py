@@ -36,12 +36,12 @@ class Data:
         # split data into training, validation and testing data
         # make sure that tum type arrays are 1-dimensional
         self.trainFeatures, self.testFeatures, self.trainLabels, self.testLabels = train_test_split(
-            self.features, self.labels, test_size=0.5, random_state=100)
+            self.features, self.labels, test_size=0.5, random_state=26)
         self.trainLabels = self.trainLabels.ravel()
         self.testLabels = self.testLabels.ravel()
 
         self.validFeatures, self.testFeatures, self.validLabels, self.testLabels = train_test_split(
-            self.testFeatures, self.testLabels, test_size=0.5, random_state=100)
+            self.testFeatures, self.testLabels, test_size=0.5, random_state=26)
         self.testLabels = self.testLabels.ravel()
         self.validLabels = self.validLabels.ravel()
 
@@ -179,19 +179,19 @@ def split(dataFeatures, dataLabels, index, value):
     for i, d in enumerate(dataFeatures):
         if int(d[index]) < value:
             lF.append(d)
-            lL.append(dataLabels[index])
+            lL.append(dataLabels[i])
         else:
             rF.append(d)
-            rL.append(dataLabels[index])
+            rL.append(dataLabels[i])
     return lF, rF, lL, rL
 
 
 def GenerateTree(trainFeatures, trainLabels, k, depth):
 
-    if NodeEntropy(impurityType, trainLabels) < k:
+    gain, attribute = SplitAttribute(trainFeatures, trainLabels)
+    if gain ==0 or NodeEntropy(impurityType, trainLabels) < k:
         return Leaf(trainLabels)
 
-    attribute = SplitAttribute(trainFeatures, trainLabels)
     leftF, rightF, leftL, rightL = split(trainFeatures, trainLabels, attribute[0], attribute[1])
 
     leftNode = GenerateTree(leftF, leftL, k, depth+1)
@@ -202,10 +202,10 @@ def GenerateTree(trainFeatures, trainLabels, k, depth):
 
 def GenerateTreeDepth(trainFeatures, trainLabels, k, depth):
 
-    if depth == k:
+    gain, attribute = SplitAttribute(trainFeatures, trainLabels)
+    if gain==0 or depth == k:
         return Leaf(trainLabels)
 
-    attribute = SplitAttribute(trainFeatures, trainLabels)
     leftF, rightF, leftL, rightL = split(trainFeatures, trainLabels, attribute[0], attribute[1])
     leftNode = GenerateTreeDepth(leftF, leftL, k, depth+1)
     rightNode = GenerateTreeDepth(rightF, rightL, k, depth+1)
@@ -214,15 +214,12 @@ def GenerateTreeDepth(trainFeatures, trainLabels, k, depth):
 
 
 def SplitAttribute(trainFeatures, trainLabels):
-    print("Split attribute")
     cur_ent = NodeEntropy(impurityType, trainLabels)
     gain = 0
-    bestf = [0,0]
+    bestf = [0, 0]
 
     for fIndex in range(len(trainFeatures[0])):
-        print("Index",  fIndex)
         attrVals = np.unique([dataPoint[fIndex] for dataPoint in trainFeatures])
-        print(attrVals)
         for val in attrVals:
             leftF, rightF, leftL, rightL = split(trainFeatures, trainLabels, fIndex, val)
 
@@ -235,7 +232,7 @@ def SplitAttribute(trainFeatures, trainLabels):
                 bestf = [fIndex, val]
 
 
-    return bestf
+    return gain, bestf
 
 
 def SplitEntropy(leftL, rightL, cur_ent):
@@ -265,7 +262,7 @@ def Predict(tree, testFeatures, testLabels):
                 confMatrix[1][0] += 1
 
     accuracy = (confMatrix[0][0] + confMatrix[1][1]) / (sum(map(sum, confMatrix)))
-    return accuracy
+    print(accuracy)
 
 
 def ClassifyWithTree(sample, node):
@@ -290,63 +287,63 @@ fscore = []
 
 K = [2, 3, 4, 5, 6, 7, 8, 16, 32]
 
-# # split training set into into training and validation
-#
-# for k in K:
-#     cMatrix, accuracy, TPR, PPV, TNR, FScore = kNN(k, d.trainFeatures, d.trainLabels, d.validFeatures, d.validLabels)
-#     print(cMatrix, accuracy, TPR, PPV, TNR, FScore)
-#     performance.append(accuracy)
-#     tpr.append(TPR)
-#     ppv.append(PPV)
-#     tnr.append(TNR)
-#     fscore.append(FScore)
-#
-# plt.figure(1)
-# plt.title('Accuracy vs. k')
-# plt.xlabel('k value')
-# plt.ylabel('Accuracy')
-# plt.xticks(K)
-# plt.plot(K, performance, color='purple', marker='*')
-# plt.savefig('images/accuracy.png')
-#
-# plt.figure(2,figsize=(11.5, 8))
-#
-# plt.subplot(221)
-# plt.xticks(K)
-# plt.plot(K, tpr, color='green', marker='*')
-# plt.ylabel('Sensitivity (TPR)')
-# plt.xlabel('k value')
-#
-# plt.subplot(222)
-# plt.xticks(K)
-# plt.plot(K, ppv, color='blue', marker='*')
-# plt.ylabel('Precision (PPV) ')
-# plt.xlabel('k value')
-#
-# plt.subplot(223)
-# plt.xticks(K)
-# plt.plot(K, tnr, color='magenta', marker='*')
-# plt.ylabel('Specificity (TNR)')
-# plt.xlabel('k value')
-#
-# plt.subplot(224)
-# plt.xticks(K)
-# plt.plot(K, fscore, color='orange', marker='*')
-# plt.ylabel('F Score')
-# plt.xlabel('k value')
-# plt.savefig('images/metrics.png')
-#
-# bestK = []
-# for i, p in enumerate(performance):
-#     if p == max(performance):
-#         bestK.append(K[i])
-#
-# print("Best K: ", bestK)
-#
-# # run kNN on best chosen K
-# for k in bestK:
-#     cMatrix, accuracy, TPR, PPV, TNR, FScore = kNN(k, d.trainFeatures, d.trainLabels, d.testFeatures, d.testLabels)
-#     print(cMatrix, accuracy, TPR, PPV, TNR, FScore)
+# split training set into into training and validation
+
+for k in K:
+    cMatrix, accuracy, TPR, PPV, TNR, FScore = kNN(k, d.trainFeatures, d.trainLabels, d.validFeatures, d.validLabels)
+    print(cMatrix, accuracy, TPR, PPV, TNR, FScore)
+    performance.append(accuracy)
+    tpr.append(TPR)
+    ppv.append(PPV)
+    tnr.append(TNR)
+    fscore.append(FScore)
+
+plt.figure(1)
+plt.title('Accuracy vs. k')
+plt.xlabel('k value')
+plt.ylabel('Accuracy')
+plt.xticks(K)
+plt.plot(K, performance, color='purple', marker='*')
+plt.savefig('images/accuracy.png')
+
+plt.figure(2,figsize=(11.5, 8))
+
+plt.subplot(221)
+plt.xticks(K)
+plt.plot(K, tpr, color='green', marker='*')
+plt.ylabel('Sensitivity (TPR)')
+plt.xlabel('k value')
+
+plt.subplot(222)
+plt.xticks(K)
+plt.plot(K, ppv, color='blue', marker='*')
+plt.ylabel('Precision (PPV) ')
+plt.xlabel('k value')
+
+plt.subplot(223)
+plt.xticks(K)
+plt.plot(K, tnr, color='magenta', marker='*')
+plt.ylabel('Specificity (TNR)')
+plt.xlabel('k value')
+
+plt.subplot(224)
+plt.xticks(K)
+plt.plot(K, fscore, color='orange', marker='*')
+plt.ylabel('F Score')
+plt.xlabel('k value')
+plt.savefig('images/metrics.png')
+
+bestK = []
+for i, p in enumerate(performance):
+    if p == max(performance):
+        bestK.append(K[i])
+
+print("Best K: ", bestK)
+
+# run kNN on best chosen K
+for k in bestK:
+    cMatrix, accuracy, TPR, PPV, TNR, FScore = kNN(k, d.trainFeatures, d.trainLabels, d.testFeatures, d.testLabels)
+    print(cMatrix, accuracy, TPR, PPV, TNR, FScore)
 
 impurityType = 0
 
