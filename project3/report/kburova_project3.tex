@@ -48,7 +48,11 @@
 		where TP = \# true positives, TN = \# true negatives, FP = \# false positives, FN = \# false negatives.\\
 		
 		\item Accuracy = (TN + TP) / (TN + TP + FN + FP)\\
-		Accuracy tells us how what percent of data what classified correctly. \\		\item TPR (true positive rate, recall, or sensitivity) = TP / (TP + FN)\\		\item PPV (positive predictive value or precision) = TP / (TP + FP)\\		\item TNR (true negative rate or specificity) = TN / (TN + FP)\\		\item F Score = PPV * TPR / (PPV + TPR)\\
+		{\bf Accuracy} tells us what percent of data was classified correctly. \\		\item TPR (true positive rate, recall, or sensitivity) = TP / (TP + FN)\\
+		{\bf Sensitivity} shows us rate at which true positives are not missed/overlooked \\		\item PPV (positive predictive value or precision) = TP / (TP + FP)\\
+		{\bf Precision} is basically a fraction of relevant positive data from all the positive data we have, meaning have many of those diagnosed with bad cancer really have it. \\ 		\item TNR (true negative rate or specificity) = TN / (TN + FP)\\
+		{\bf Specificity} is a rate that shows how well we can distinguish data that is truly negative, meaning that people have good tumor.\\		\item F Score = PPV * TPR / (PPV + TPR)\\
+		{\bf F score} is a harmonic average of precision and sensitivity, it is basically used if we can't decide with of 2 metrics to use for performance measurements. \\
 	\end{itemize}
 	
 	{\bf \item Part 1. k-Nearest-Neighbors. }\\
