@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  6 NOV 2017 21:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  7 NOV 2017 22:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1059,132 +1059,127 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 17.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 19--20
+Underfull \hbox (badness 10000) in paragraph at lines 24--25
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 23--24
+Underfull \hbox (badness 10000) in paragraph at lines 40--41
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 39--40
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 41--43
+Underfull \hbox (badness 10000) in paragraph at lines 42--44
 
  []
 
 [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 44--45
+Underfull \hbox (badness 10000) in paragraph at lines 45--46
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 46--47
+Underfull \hbox (badness 10000) in paragraph at lines 47--48
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 48--49
+Underfull \hbox (badness 10000) in paragraph at lines 49--50
 
  []
 
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 52.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 53.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 52.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 53.
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--53
+Underfull \hbox (badness 10000) in paragraph at lines 53--54
 
  []
 
 <../images/1.png, id=14, 345.29pt x 117.43875pt>
 File: ../images/1.png Graphic file (type png)
  <use ../images/1.png>
-Package pdftex.def Info: ../images/1.png used on input line 54.
+Package pdftex.def Info: ../images/1.png used on input line 55.
 (pdftex.def)             Requested size: 241.70134pt x 82.20654pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 54--56
+Underfull \hbox (badness 10000) in paragraph at lines 55--57
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 57--59
+Underfull \hbox (badness 10000) in paragraph at lines 58--60
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 59--61
+Underfull \hbox (badness 10000) in paragraph at lines 60--62
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 61--63
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 63--65
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 65--67
+Underfull \hbox (badness 10000) in paragraph at lines 62--64
 
  []
 
 [2 <../images/1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 69--70
+Underfull \hbox (badness 10000) in paragraph at lines 64--66
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--68
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 70--71
 
  []
 
 <../images/d1.png, id=21, 200.75pt x 88.33pt>
 File: ../images/d1.png Graphic file (type png)
  <use ../images/d1.png>
-Package pdftex.def Info: ../images/d1.png used on input line 72.
+Package pdftex.def Info: ../images/d1.png used on input line 73.
 (pdftex.def)             Requested size: 140.52403pt x 61.83057pt.
 
 <../images/d2.png, id=22, 329.23pt x 175.65625pt>
 File: ../images/d2.png Graphic file (type png)
  <use ../images/d2.png>
-Package pdftex.def Info: ../images/d2.png used on input line 73.
+Package pdftex.def Info: ../images/d2.png used on input line 74.
 (pdftex.def)             Requested size: 164.6146pt x 87.8279pt.
 
 <../images/d3.png, id=23, 191.71625pt x 135.50626pt>
 File: ../images/d3.png Graphic file (type png)
  <use ../images/d3.png>
-Package pdftex.def Info: ../images/d3.png used on input line 74.
+Package pdftex.def Info: ../images/d3.png used on input line 75.
 (pdftex.def)             Requested size: 134.20045pt x 94.85371pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 71--75
+Underfull \hbox (badness 10000) in paragraph at lines 72--76
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 78--80
+Underfull \hbox (badness 10000) in paragraph at lines 79--81
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 81--83
+Underfull \hbox (badness 10000) in paragraph at lines 82--84
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 84--86
+Underfull \hbox (badness 10000) in paragraph at lines 85--87
 
  []
 
 [3 <../images/d1.png> <../images/d2.png> <../images/d3.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 87--88
+Underfull \hbox (badness 10000) in paragraph at lines 88--89
 
  []
 
@@ -1195,53 +1190,375 @@ File: ../images/accuracy.png Graphic file (type png)
 Package pdftex.def Info: ../images/accuracy.png used on input line 90.
 (pdftex.def)             Requested size: 323.76738pt x 242.82553pt.
 
+Underfull \hbox (badness 10000) in paragraph at lines 92--94
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 95--96
+
+ []
+
 <../images/metrics.png, id=31, 831.105pt x 578.16pt>
 File: ../images/metrics.png Graphic file (type png)
 
 <use ../images/metrics.png>
-Package pdftex.def Info: ../images/metrics.png used on input line 93.
+Package pdftex.def Info: ../images/metrics.png used on input line 97.
 (pdftex.def)             Requested size: 540.21185pt x 375.79955pt.
 
-Overfull \hbox (70.92397pt too wide) in paragraph at lines 93--94
-[] 
+Overfull \hbox (70.92397pt too wide) in paragraph at lines 97--99
+[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 97--99
+
  []
 
 [4 <../images/accuracy.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 96--97
+<../images/2.png, id=36, 165.61874pt x 230.8625pt>
+File: ../images/2.png Graphic file (type png)
+ <use ../images/2.png>
+Package pdftex.def Info: ../images/2.png used on input line 114.
+(pdftex.def)             Requested size: 149.05548pt x 207.7743pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--118
+
+ []
+
+[5 <../images/metrics.png>] <../images/4.png, id=42, 298.11375pt x 27.10126pt>
+File: ../images/4.png Graphic file (type png)
+
+<use ../images/4.png>
+Package pdftex.def Info: ../images/4.png used on input line 119.
+(pdftex.def)             Requested size: 208.67819pt x 18.97073pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 118--120
+
+ []
+
+<../images/5.png, id=43, 164.615pt x 29.10875pt>
+File: ../images/5.png Graphic file (type png)
+ <use ../images/5.png>
+Package pdftex.def Info: ../images/5.png used on input line 121.
+(pdftex.def)             Requested size: 115.2297pt x 20.37598pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 120--122
+
+ []
+
+<../images/6.png, id=44, 220.825pt x 30.1125pt>
+File: ../images/6.png Graphic file (type png)
+ <use ../images/6.png>
+Package pdftex.def Info: ../images/6.png used on input line 123.
+(pdftex.def)             Requested size: 154.57643pt x 21.07858pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 122--124
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 98--99
+Underfull \hbox (badness 10000) in paragraph at lines 125--126
 
  []
 
-[5 <../images/metrics.png>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 109.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 109.
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--128
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 130--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 132--133
+
+ []
+
+[6 <../images/2.png> <../images/4.png> <../images/5.png> <../images/6.png>]
+<../images/7.png, id=52, 411.5375pt x 437.635pt>
+File: ../images/7.png Graphic file (type png)
+ <use ../images/7.png>
+Package pdftex.def Info: ../images/7.png used on input line 134.
+(pdftex.def)             Requested size: 288.07428pt x 306.3424pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 134--136
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
+
+ []
+
+
+<../images/accuracy_validation_DT_Depth_error_0.png, id=53, 462.528pt x 346.896
+pt>
+File: ../images/accuracy_validation_DT_Depth_error_0.png Graphic file (type png
+)
+ <use ../images/accuracy_validation_DT_Depth_error_0.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Depth_error_0.png use
+d on input line 140.
+(pdftex.def)             Requested size: 323.76738pt x 242.82553pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 139--141
+
+ []
+
+[7 <../images/7.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 142--144
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 153--154
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 155--156
+
+ []
+
+
+<../images/accuracy_validation_DT_Threshold_gini.png, id=59, 462.528pt x 346.89
+6pt>
+File: ../images/accuracy_validation_DT_Threshold_gini.png Graphic file (type pn
+g)
+ <use ../images/accuracy_validation_DT_Threshold_gini.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_gini.png us
+ed on input line 158.
+(pdftex.def)             Requested size: 323.76738pt x 242.82553pt.
+ [8 <../images/accuracy_validation_DT_Depth_error_0.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 169--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 171--172
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 173--174
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 175--176
+
+ []
+
+
+<../images/accuracy_validation_DT_Threshold_entropy_2.png, id=64, 462.528pt x 3
+46.896pt>
+File: ../images/accuracy_validation_DT_Threshold_entropy_2.png Graphic file (ty
+pe png)
+ <use ../images/accuracy_validation_DT_Threshold_entropy_2.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_entropy_2.p
+ng used on input line 178.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<../images/accuracy_validation_DT_Threshold_entropy_4.png, id=65, 462.528pt x 3
+46.896pt>
+File: ../images/accuracy_validation_DT_Threshold_entropy_4.png Graphic file (ty
+pe png)
+ <use ../images/accuracy_validation_DT_Threshold_entropy_4.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_entropy_4.p
+ng used on input line 179.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<../images/accuracy_validation_DT_Threshold_entropy_6.png, id=66, 462.528pt x 3
+46.896pt>
+File: ../images/accuracy_validation_DT_Threshold_entropy_6.png Graphic file (ty
+pe png)
+ <use ../images/accuracy_validation_DT_Threshold_entropy_6.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_entropy_6.p
+ng used on input line 180.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+Overfull \hbox (21.69974pt too wide) in paragraph at lines 177--181
+[] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 177--181
+
+ []
+
+[9 <../images/accuracy_validation_DT_Threshold_gini.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 182--183
+
+ []
+
+
+<../images/accuracy_validation_DT_Threshold_gini_2.png, id=71, 462.528pt x 346.
+896pt>
+File: ../images/accuracy_validation_DT_Threshold_gini_2.png Graphic file (type 
+png)
+ <use ../images/accuracy_validation_DT_Threshold_gini_2.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_gini_2.png 
+used on input line 185.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<../images/accuracy_validation_DT_Threshold_gini_4.png, id=72, 462.528pt x 346.
+896pt>
+File: ../images/accuracy_validation_DT_Threshold_gini_4.png Graphic file (type 
+png)
+ <use ../images/accuracy_validation_DT_Threshold_gini_4.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_gini_4.png 
+used on input line 186.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<../images/accuracy_validation_DT_Threshold_gini_6.png, id=73, 462.528pt x 346.
+896pt>
+File: ../images/accuracy_validation_DT_Threshold_gini_6.png Graphic file (type 
+png)
+ <use ../images/accuracy_validation_DT_Threshold_gini_6.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_gini_6.png 
+used on input line 187.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+Overfull \hbox (21.69974pt too wide) in paragraph at lines 184--188
+[] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 184--188
+
+ []
+
+[10 <../images/accuracy_validation_DT_Threshold_entropy_2.png> <../images/accur
+acy_validation_DT_Threshold_entropy_4.png> <../images/accuracy_validation_DT_Th
+reshold_entropy_6.png> <../images/accuracy_validation_DT_Threshold_gini_2.png> 
+<../images/accuracy_validation_DT_Threshold_gini_4.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 189--190
+
+ []
+
+
+<../images/accuracy_validation_DT_Threshold_error_2.png, id=82, 462.528pt x 346
+.896pt>
+File: ../images/accuracy_validation_DT_Threshold_error_2.png Graphic file (type
+ png)
+ <use ../images/accuracy_validation_DT_Threshold_error_2.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_error_2.png
+ used on input line 192.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<../images/accuracy_validation_DT_Threshold_error_4.png, id=83, 462.528pt x 346
+.896pt>
+File: ../images/accuracy_validation_DT_Threshold_error_4.png Graphic file (type
+ png)
+ <use ../images/accuracy_validation_DT_Threshold_error_4.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_error_4.png
+ used on input line 193.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<../images/accuracy_validation_DT_Threshold_error_6.png, id=84, 462.528pt x 346
+.896pt>
+File: ../images/accuracy_validation_DT_Threshold_error_6.png Graphic file (type
+ png)
+ <use ../images/accuracy_validation_DT_Threshold_error_6.png>
+Package pdftex.def Info: ../images/accuracy_validation_DT_Threshold_error_6.png
+ used on input line 194.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+Overfull \hbox (21.69974pt too wide) in paragraph at lines 191--195
+[] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 191--195
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 196--197
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 198--199
+
+ []
+
+[11 <../images/accuracy_validation_DT_Threshold_gini_6.png> <../images/accuracy
+_validation_DT_Threshold_error_2.png> <../images/accuracy_validation_DT_Thresho
+ld_error_4.png> <../images/accuracy_validation_DT_Threshold_error_6.png>]
+<../images/clusters_entropy_Depth_.png, id=92, 462.528pt x 346.896pt>
+File: ../images/clusters_entropy_Depth_.png Graphic file (type png)
+
+<use ../images/clusters_entropy_Depth_.png>
+Package pdftex.def Info: ../images/clusters_entropy_Depth_.png used on input li
+ne 201.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<../images/clusters_gini_Depth_.png, id=93, 462.528pt x 346.896pt>
+File: ../images/clusters_gini_Depth_.png Graphic file (type png)
+
+<use ../images/clusters_gini_Depth_.png>
+Package pdftex.def Info: ../images/clusters_gini_Depth_.png used on input line 
+202.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+<../images/clusters_error_Depth_.png, id=94, 462.528pt x 346.896pt>
+File: ../images/clusters_error_Depth_.png Graphic file (type png)
+
+<use ../images/clusters_error_Depth_.png>
+Package pdftex.def Info: ../images/clusters_error_Depth_.png used on input line
+ 203.
+(pdftex.def)             Requested size: 231.26343pt x 173.44757pt.
+
+Overfull \hbox (21.69974pt too wide) in paragraph at lines 200--204
+[] []
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 200--204
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 205--207
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 210--211
+
+ []
+
+[12 <../images/clusters_entropy_Depth_.png> <../images/clusters_gini_Depth_.png
+> <../images/clusters_error_Depth_.png>] [13]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 221.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 221.
  (./kburova_project3.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 109.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 109.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 109.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 221.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 221.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 221.
  ) 
 Here is how much of TeX's memory you used:
- 24740 strings out of 492995
- 617363 string characters out of 6132704
- 801222 words of memory out of 5000000
- 27855 multiletter control sequences out of 15000+600000
- 7747 words of font info for 30 fonts, out of 8000000 for 9000
+ 24838 strings out of 492995
+ 621425 string characters out of 6132704
+ 802222 words of memory out of 5000000
+ 27933 multiletter control sequences out of 15000+600000
+ 7916 words of font info for 31 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 62i,6n,96p,766b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,6n,96p,986b,609s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></
 usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></us
 r/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
-/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on kburova_project3.pdf (5 pages, 187125 bytes).
+/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/
+local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on kburova_project3.pdf (13 pages, 455479 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 34 compressed objects within 1 object stream
+ 129 PDF objects out of 1000 (max. 8388607)
+ 56 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 43 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 138 words of extra memory for PDF output out of 10000 (max. 10000000)
 
