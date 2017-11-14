@@ -14,10 +14,13 @@ class Data:
         self.features = data[:, :-1]
         self.labels = data[:, [-1]]
 
+        # normalize data
+        self.normalize()
+
         # split data into training, validation and testing data
         # make sure that tum type arrays are 1-dimensional
         self.trainFeatures, self.testFeatures, self.trainLabels, self.testLabels = train_test_split(
-            self.features, self.labels, test_size=0.5, random_state=26)
+            self.features, self.labels, test_size=0.4, random_state=26)
         self.trainLabels = self.trainLabels.ravel()
         self.testLabels = self.testLabels.ravel()
 
@@ -26,6 +29,11 @@ class Data:
         self.testLabels = self.testLabels.ravel()
         self.validLabels = self.validLabels.ravel()
 
+    def normalize(self):
+        M = np.mean(self.features, axis=0)
+        D = np.sqrt(np.mean((self.features - M)**2, axis=0))
+
+        self.features = (self.features - M) / D
 
 class BackProp:
     def __init__(self, data, lr, ne, ln, nn):
@@ -39,44 +47,42 @@ class BackProp:
         self.output_delta = 0
         self.output_h = 0
         self.output_sigma = 0
-        self.output_bias_w = np.random.rand()
+        self.output_bias_w = np.random.uniform(-0.01, 0.01, 1)
         self.expected_output = 0
-        self.input = np.array(self.num_inputs)
-        self.RMSE = np.array([])
+        self.input = []
+        self.RMSE = []
 
         # 3 dimensional array num_layers x num_neurons x num_of_prev_layer_nodes
-        self.hidden_weights = np.array([])
+        self.hidden_weights = []
 
         # 1 dim array, num of elem = number of neurons in last layer
-        self.output_weights = np.random.rand(self.num_neurons[-1])
-        self.input = np.empty(self.num_inputs)
+        self.output_weights = list(np.random.uniform(-0.01, 0.01, self.num_neurons[-1]))
 
         # 2 dimensional arrays num_of_layers x num_of_neurons
-        self.bias_weights = np.array([])
-        self.hidden_sigma = np.ndarray([])
-        self.hidden_h = np.array([])
-        self.hidden_delta = np.array([])
+        self.bias_weights = []
+        self.hidden_sigma = []
+        self.hidden_h = []
+        self.hidden_delta = []
 
-        for it, n in enumerate(self.num_neurons):
+        for i, n in enumerate(self.num_neurons):
             # set bias weights to random values
-            np.insert(self.bias_weights, np.random.rand(n), axis=0)
+            self.bias_weights.append(list(np.random.uniform(-0.01, 0.01, n)))
 
             # fill array with empty dimensions
-            print(n)
-            print(np.zeros(n))
-            np.append(self.hidden_sigma, np.zeros(n), axis=0)
-            np.append(self.hidden_h, np.zeros(n), axis=0)
-            np.append(self.hidden_delta, np.zeros(n), axis=0)
+            self.hidden_sigma.append(list(np.zeros(n)))
+            self.hidden_h.append(list(np.zeros(n)))
+            self.hidden_delta.append(list(np.zeros(n)))
 
-            hid_w = np.array([])
-            for it_n in range(n):
-                if it == 0:
+            hid_w = []
+            for j in range(n):
+                if i == 0:
                     num_prev = self.num_inputs
                 else:
-                    num_prev = self.num_neurons[it-1]
-                    np.append(hid_w, np.random.rand(num_prev), axis=0)
-            np.append(self.hidden_weights, hid_w, axis=0)
-        print(self.hidden_sigma)
+                    num_prev = self.num_neurons[i-1]
+                hid_w.append(list(np.random.uniform(-0.01, 0.01, num_prev)))
+            self.hidden_weights.append(hid_w)
+        print(self.hidden_weights)
+
     def compute_outputs(self):
         self.output_delta = 0
         self.output_h = 0
@@ -116,7 +122,7 @@ class BackProp:
                         self.hidden_delta[i][j] = self.hidden_sigma[i][j] * (1 - self.hidden_sigma[i][j]) * self.hidden_delta[i+1][c] * self.hidden_weights[i+1][c][j]
 
     def update_weights(self):
-        for i, n in self.num_neurons:
+        for i, n in enumerate(self.num_neurons):
             for j in range(n):
                 if i == 0:
                     for c in range(self.num_inputs):
@@ -143,13 +149,14 @@ class BackProp:
         sum = 0.0
         num_of_patterns = 0
 
-        for i, self.input in enumerate(self.data.vaidateFeatures):
-            self.expected_output = self.data.validateLabels[i]
+        for i, self.input in enumerate(self.data.validFeatures):
+            self.expected_output = self.data.validLabels[i]
             self.compute_outputs()
             sum += (self.expected_output - self.output_sigma)**2
             num_of_patterns += 1
         rmse = (sum / (2.0 * num_of_patterns))**0.5
-        np.append(self.RMSE, rmse)
+        self.RMSE.append(rmse)
+        print(rmse)
 
     def test_network(self):
         tp = 0
@@ -161,7 +168,7 @@ class BackProp:
             self.expected_output = self.data.testLabels[i]
             self.compute_outputs()
 
-            if math.abs(self.expected_output - self.output_sigma) > (self.RMSE[-1] + 0.01):
+            if math.fabs(self.expected_output - self.output_sigma) > (self.RMSE[-1] + 0.01):
                 if self.expected_output == 1:
                     fn += 1
                 else:
@@ -182,12 +189,13 @@ class BackProp:
 
     def run(self):
         for i in range(self.number_epochs):
+            print('Epoch: ', i)
             self.train_network()
             self.validate_network()
-        self.print_RMSE()
+        # self.print_RMSE()
         self.test_network()
 
 
 d = Data('spambase.data')
-b = BackProp(d, 0.3, 2000, 5, [15, 20, 20, 20, 15])
+b = BackProp(d, 0.3, 200, 1, [45])
 b.run()
