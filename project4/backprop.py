@@ -49,14 +49,15 @@ class BackProp:
         self.output_sigma = 0
         self.output_bias_w = np.random.uniform(-0.01, 0.01, 1)
         self.expected_output = 0
-        self.input = []
-        self.RMSE = []
+
+        self.input = np.array([])
+        self.RMSE = np.array([])
 
         # 3 dimensional array num_layers x num_neurons x num_of_prev_layer_nodes
         self.hidden_weights = []
 
         # 1 dim array, num of elem = number of neurons in last layer
-        self.output_weights = list(np.random.uniform(-0.01, 0.01, self.num_neurons[-1]))
+        self.output_weights = np.random.uniform(-0.01, 0.01, self.num_neurons[-1])
 
         # 2 dimensional arrays num_of_layers x num_of_neurons
         self.bias_weights = []
@@ -66,12 +67,12 @@ class BackProp:
 
         for i, n in enumerate(self.num_neurons):
             # set bias weights to random values
-            self.bias_weights.append(list(np.random.uniform(-0.01, 0.01, n)))
+            self.bias_weights.append(np.random.uniform(-0.01, 0.01, n))
 
             # fill array with empty dimensions
-            self.hidden_sigma.append(list(np.zeros(n)))
-            self.hidden_h.append(list(np.zeros(n)))
-            self.hidden_delta.append(list(np.zeros(n)))
+            self.hidden_sigma.append(np.zeros(n))
+            self.hidden_h.append(np.zeros(n))
+            self.hidden_delta.append(np.zeros(n))
 
             hid_w = []
             for j in range(n):
@@ -80,8 +81,13 @@ class BackProp:
                 else:
                     num_prev = self.num_neurons[i-1]
                 hid_w.append(list(np.random.uniform(-0.01, 0.01, num_prev)))
-            self.hidden_weights.append(hid_w)
-        print(self.hidden_weights)
+            self.hidden_weights.append(np.array(hid_w, dtype=object))
+
+        self.bias_weights = np.array(self.bias_weights, dtype=object)
+        self.hidden_sigma = np.array(self.hidden_sigma, dtype=object)
+        self.hidden_h = np.array(self.hidden_h, dtype=object)
+        self.hidden_delta = np.array(self.hidden_delta, dtype=object)
+        self.hidden_weights = np.array(self.hidden_weights, dtype=object)
 
     def compute_outputs(self):
         self.output_delta = 0
@@ -155,7 +161,7 @@ class BackProp:
             sum += (self.expected_output - self.output_sigma)**2
             num_of_patterns += 1
         rmse = (sum / (2.0 * num_of_patterns))**0.5
-        self.RMSE.append(rmse)
+        np.append(self.RMSE, rmse)
         print(rmse)
 
     def test_network(self):
@@ -197,5 +203,5 @@ class BackProp:
 
 
 d = Data('spambase.data')
-b = BackProp(d, 0.3, 200, 1, [45])
+b = BackProp(d, 0.3, 200, 1, [10])
 b.run()
