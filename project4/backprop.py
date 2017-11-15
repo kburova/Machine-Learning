@@ -81,7 +81,7 @@ class BackProp:
                 else:
                     num_prev = self.num_neurons[i-1]
                 hid_w.append(list(np.random.uniform(-0.01, 0.01, num_prev)))
-            self.hidden_weights.append(np.array(hid_w, dtype=object))
+            self.hidden_weights.append(np.array(hid_w))
 
         self.bias_weights = np.array(self.bias_weights, dtype=object)
         self.hidden_sigma = np.array(self.hidden_sigma, dtype=object)
@@ -89,6 +89,11 @@ class BackProp:
         self.hidden_delta = np.array(self.hidden_delta, dtype=object)
         self.hidden_weights = np.array(self.hidden_weights, dtype=object)
 
+        print(self.bias_weights)
+        print(self.hidden_sigma)
+        print(self.hidden_weights)
+
+        exit(0)
     def compute_outputs(self):
         self.output_delta = 0
         self.output_h = 0
@@ -203,5 +208,5 @@ class BackProp:
 
 
 d = Data('spambase.data')
-b = BackProp(d, 0.3, 200, 1, [10])
+b = BackProp(d, 0.3, 200, 3, [2,3,2])
 b.run()
