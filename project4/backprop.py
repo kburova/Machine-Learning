@@ -48,15 +48,17 @@ class BackProp:
         self.output_h = 0
         self.output_sigma = 0
         self.output_bias_w = np.random.uniform(-0.01, 0.01, 1)
+        # self.output_bias_w = 0.01
         self.expected_output = 0
-        self.input = []
-        self.RMSE = []
+        self.input = np.array([])
+        self.RMSE = np.array([])
 
         # 3 dimensional array num_layers x num_neurons x num_of_prev_layer_nodes
         self.hidden_weights = []
 
         # 1 dim array, num of elem = number of neurons in last layer
-        self.output_weights = list(np.random.uniform(-0.01, 0.01, self.num_neurons[-1]))
+        self.output_weights = np.random.uniform(-0.01, 0.01, self.num_neurons[-1])
+        # self.output_weights = np.arange(self.num_neurons[-1])
 
         # 2 dimensional arrays num_of_layers x num_of_neurons
         self.bias_weights = []
@@ -66,12 +68,12 @@ class BackProp:
 
         for i, n in enumerate(self.num_neurons):
             # set bias weights to random values
-            self.bias_weights.append(list(np.random.uniform(-0.01, 0.01, n)))
-
+            self.bias_weights.append(np.random.uniform(-0.01, 0.01, n))
+            # self.bias_weights.append(np.arange(n))
             # fill array with empty dimensions
-            self.hidden_sigma.append(list(np.zeros(n)))
-            self.hidden_h.append(list(np.zeros(n)))
-            self.hidden_delta.append(list(np.zeros(n)))
+            self.hidden_sigma.append(np.zeros(n))
+            self.hidden_h.append(np.zeros(n))
+            self.hidden_delta.append(np.zeros(n))
 
             hid_w = []
             for j in range(n):
@@ -79,9 +81,16 @@ class BackProp:
                     num_prev = self.num_inputs
                 else:
                     num_prev = self.num_neurons[i-1]
-                hid_w.append(list(np.random.uniform(-0.01, 0.01, num_prev)))
-            self.hidden_weights.append(hid_w)
-        print(self.hidden_weights)
+                hid_w.append(np.random.uniform(-0.01, 0.01, num_prev))
+                # hid_w.append(np.arange(num_prev))
+
+            self.hidden_weights.append(np.array(hid_w, dtype=object))
+
+        self.bias_weights = np.array(self.bias_weights, dtype=object)
+        self.hidden_sigma = np.array(self.hidden_sigma, dtype=object)
+        self.hidden_h = np.array(self.hidden_h, dtype=object)
+        self.hidden_delta = np.array(self.hidden_delta, dtype=object)
+        self.hidden_weights = np.array(self.hidden_weights, dtype=object)
 
     def compute_outputs(self):
         self.output_delta = 0
@@ -89,52 +98,51 @@ class BackProp:
         self.output_sigma = 0
 
         # reset vals
-        for i in range(self.num_layers):
-            for j in range(self.num_neurons[i]):
-                self.hidden_sigma[i][j] = 0
-                self.hidden_delta[i][j] = 0
-                self.hidden_h[i][j] = 0
+        for s, d, h in zip(self.hidden_sigma, self.hidden_delta, self.hidden_h):
+            s.fill(0)
+            d.fill(0)
+            h.fill(0)
 
         for i, n in enumerate(self.num_neurons):
             for j in range(n):
                 if i == 0:
-                    for c in range(self.num_inputs):
-                        self.hidden_h[i][j] += self.hidden_weights[i][j][c] * self.input[c]
+                    self.hidden_h[i][j] = np.sum(self.hidden_weights[i][j] * self.input)
                 else:
-                    for c in range(self.num_neurons[i-1]):
-                        self.hidden_h[i][j] += self.hidden_weights[i][j][c] * self.hidden_sigma[i-1][c]
-                self.hidden_h[i][j] += self.bias_weights[i][j]
-                self.hidden_sigma[i][j] = 1/(1 + math.exp(-self.hidden_h[i][j]))
+                    # for c in range(self.num_neurons[i-1]):
+                    self.hidden_h[i][j] = np.sum(self.hidden_weights[i][j] * self.hidden_sigma[i-1])
 
-        for i in range(self.num_neurons[-1]):
-            self.output_h += self.hidden_sigma[-1][i] * self.output_weights[i]
+            self.hidden_h[i] = self.hidden_h[i] + self.bias_weights[i]
+            self.hidden_sigma[i] = 1/(1 + np.exp(-self.hidden_h[i]))
+
+        # for i in range(self.num_neurons[-1]):
+        self.output_h = np.sum(self.hidden_sigma[-1] * self.output_weights)
         self.output_h += self.output_bias_w
         self.output_sigma = 1/(1 + math.exp(-self.output_h))
 
     def compute_delta(self):
         self.output_delta = self.output_sigma * (1 - self.output_sigma) * (self.expected_output - self.output_sigma)
         for i, n in reversed(list(enumerate(self.num_neurons))):
-            for j in range(n):
-                if i == self.num_layers-1:
-                    self.hidden_delta[i][j] = self.hidden_sigma[i][j] * (1 - self.hidden_sigma[i][j]) * self.output_delta * self.output_weights[j]
-                else:
-                    for c in range(self.num_neurons[i+1]):
-                        self.hidden_delta[i][j] = self.hidden_sigma[i][j] * (1 - self.hidden_sigma[i][j]) * self.hidden_delta[i+1][c] * self.hidden_weights[i+1][c][j]
+            if i == self.num_layers - 1:
+                self.hidden_delta[i] = self.hidden_sigma[i] * (1 - self.hidden_sigma[i]) * self.output_delta * self.output_weights
+            else:
+                for j in range(n):
+                    self.hidden_delta[i][j] = np.sum(self.hidden_sigma[i][j] * (1 - self.hidden_sigma[i][j]) * self.hidden_delta[i+1] * self.hidden_weights[i+1][:, j])
+                # print(self.hidden_delta[i])
+                # print(np.sum((self.hidden_sigma[i] * (1 - self.hidden_sigma[i]) * self.hidden_delta[i + 1] * np.transpose(self.hidden_weights[i + 1][:, ])), axis=1))
+                # self.hidden_delta[i] = np.sum((self.hidden_sigma[i] * (1 - self.hidden_sigma[i]) * self.hidden_delta[i + 1] * np.transpose(self.hidden_weights[i + 1][:, ])), axis=1)
 
     def update_weights(self):
         for i, n in enumerate(self.num_neurons):
             for j in range(n):
                 if i == 0:
-                    for c in range(self.num_inputs):
-                        self.hidden_weights[i][j][c] += (self.learning_rate * self.hidden_delta[i][j]) * self.input[c]
-
+                    # for c in range(self.num_inputs):
+                    self.hidden_weights[i][j] += (self.learning_rate * self.hidden_delta[i][j]) * self.input
                 else:
-                    for c in range(self.num_neurons[i-1]):
-                        self.hidden_weights[i][j][c] += (self.learning_rate * self.hidden_delta[i][j]) * self.hidden_sigma[i - 1][c]
-                self.bias_weights[i][j] += self.learning_rate * self.hidden_delta[i][j]
+                    # for c in range(self.num_neurons[i-1]):
+                    self.hidden_weights[i][j] += (self.learning_rate * self.hidden_delta[i][j]) * self.hidden_sigma[i - 1]
+            self.bias_weights[i] += self.learning_rate * self.hidden_delta[i]
 
-        for j in range(self.num_neurons[-1]):
-            self.output_weights[j] += self.learning_rate * self.output_delta * self.hidden_sigma[-1][j]
+        self.output_weights += self.learning_rate * self.output_delta * self.hidden_sigma[-1]
         self.output_bias_w += self.learning_rate * self.output_delta
 
     def train_network(self):
@@ -155,7 +163,7 @@ class BackProp:
             sum += (self.expected_output - self.output_sigma)**2
             num_of_patterns += 1
         rmse = (sum / (2.0 * num_of_patterns))**0.5
-        self.RMSE.append(rmse)
+        np.append(self.RMSE, rmse)
         print(rmse)
 
     def test_network(self):
@@ -197,5 +205,5 @@ class BackProp:
 
 
 d = Data('spambase.data')
-b = BackProp(d, 0.3, 200, 1, [45])
+b = BackProp(d, 0.3, 2000, 1, [45])
 b.run()
