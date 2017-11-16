@@ -182,7 +182,7 @@ class BackProp:
 
     def plot_RMSE(self, n):
         plt.figure(n)
-        title = "Layers: %s, Accuracy: %.2f" % (str(self.num_neurons), self.accuracy)
+        title = "Layers: %s, LR: %.2f, Accuracy: %.2f" % (str(self.num_neurons), self.learning_rate, self.accuracy)
         plt.title(title)
         plt.plot(range(self.number_epochs), self.RMSE, marker='+', linestyle='-', color='magenta', markersize=4)
         plt.xlabel('Epoch #')
@@ -223,8 +223,8 @@ def main():
                [60, 60, 60, 60, 60],
                [60, 70, 100, 70, 60]]
 
-    epochs = [40, 100, 500, 1500, 3000, 5000, 10000]
-    lrate = [0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1]
+    epochs = [6, 10, 30, 50, 100, 500, 1500, 3000, 5000, 10000]
+    lrate = [0.01, 0.1, 0.25, 0.4, 0.65, 0.8, 0.9, 1.0]
 
     for i, l in enumerate(layers):
         for j, e in enumerate(epochs):
@@ -233,7 +233,7 @@ def main():
                 print('Problem %d' % n, file=outfile)
                 print('Testing Network %d' % n)
                 BackProp(d, lr, e, len(l), l).run(n, outfile)
+    outfile.close()
 
-# d = Data('spambase.data')
-# BackProp(d, 0.1, 100, 1, [60]).run(1)
+
 main()
