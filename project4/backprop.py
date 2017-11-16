@@ -81,7 +81,7 @@ class BackProp:
                     num_prev = self.num_inputs
                 else:
                     num_prev = self.num_neurons[i-1]
-                hid_w.append(list(np.random.uniform(-0.01, 0.01, num_prev)))
+                hid_w.append(np.random.uniform(-0.01, 0.01, num_prev))
             self.hidden_weights.append(np.array(hid_w))
 
         self.bias_weights = np.array(self.bias_weights, dtype=object)
@@ -184,7 +184,7 @@ class BackProp:
         plt.figure(n)
         title = "Layers: %s, LR: %.2f, Accuracy: %.2f" % (str(self.num_neurons), self.learning_rate, self.accuracy)
         plt.title(title)
-        plt.plot(range(self.number_epochs), self.RMSE, marker='+', linestyle='-', color='magenta', markersize=4)
+        plt.plot(range(self.number_epochs), self.RMSE, linestyle='-', color='darkturquoise', linewidth=2.3)
         plt.xlabel('Epoch #')
         plt.ylabel('RMSE')
         plt.savefig('images/rmse_'+str(n)+'.png')
@@ -232,7 +232,13 @@ def main():
                 n = (i * len(epochs) + j) * len(lrate) + k
                 print('Problem %d' % n, file=outfile)
                 print('Testing Network %d' % n)
-                BackProp(d, lr, e, len(l), l).run(n, outfile)
+                try:
+                    BackProp(d, lr, e, len(l), l).run(n, outfile)
+                except OverflowError:
+                    print('Overflow in layers combination %d, epochs = %d, and l. rate = %.2f' % (i, j, k), file=outfile)
+                except:
+                    print('Some other error')
+                    raise
     outfile.close()
 
 
