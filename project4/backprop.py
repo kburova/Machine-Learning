@@ -42,7 +42,8 @@ class BackProp:
         self.number_epochs = ne
         self.num_layers = ln
         self.num_neurons = nn
-        self.num_inputs = len(d.features[0])
+        self.num_inputs = len(data.features[0])
+        self.accuracy = 0.0
 
         self.output_delta = 0
         self.output_h = 0
@@ -51,7 +52,7 @@ class BackProp:
         self.expected_output = 0
 
         self.input = np.array([])
-        self.RMSE = np.array([])
+        self.RMSE = []
 
         # 3 dimensional array num_layers x num_neurons x num_of_prev_layer_nodes
         self.hidden_weights = []
@@ -89,63 +90,47 @@ class BackProp:
         self.hidden_delta = np.array(self.hidden_delta, dtype=object)
         self.hidden_weights = np.array(self.hidden_weights, dtype=object)
 
-        print(self.bias_weights)
-        print(self.hidden_sigma)
-        print(self.hidden_weights)
-
-        exit(0)
     def compute_outputs(self):
         self.output_delta = 0
         self.output_h = 0
         self.output_sigma = 0
 
         # reset vals
-        for i in range(self.num_layers):
-            for j in range(self.num_neurons[i]):
-                self.hidden_sigma[i][j] = 0
-                self.hidden_delta[i][j] = 0
-                self.hidden_h[i][j] = 0
+        for s, d, h in zip(self.hidden_sigma, self.hidden_delta, self.hidden_h):
+            s.fill(0)
+            d.fill(0)
+            h.fill(0)
 
         for i, n in enumerate(self.num_neurons):
-            for j in range(n):
-                if i == 0:
-                    for c in range(self.num_inputs):
-                        self.hidden_h[i][j] += self.hidden_weights[i][j][c] * self.input[c]
-                else:
-                    for c in range(self.num_neurons[i-1]):
-                        self.hidden_h[i][j] += self.hidden_weights[i][j][c] * self.hidden_sigma[i-1][c]
-                self.hidden_h[i][j] += self.bias_weights[i][j]
-                self.hidden_sigma[i][j] = 1/(1 + math.exp(-self.hidden_h[i][j]))
+            if i == 0:
+                self.hidden_h[i] = np.sum(self.hidden_weights[i] * self.input, axis=1)
+            else:
+                self.hidden_h[i] = np.sum(self.hidden_weights[i] * self.hidden_sigma[i-1], axis=1)
 
-        for i in range(self.num_neurons[-1]):
-            self.output_h += self.hidden_sigma[-1][i] * self.output_weights[i]
-        self.output_h += self.output_bias_w
+            self.hidden_h[i] = self.hidden_h[i] + self.bias_weights[i]
+            # for j in range(len(self.hidden_sigma[i])):
+            self.hidden_sigma[i] = self.hidden_sigma[i] + 1/(1 + np.exp(-1 * self.hidden_h[i].astype(float)))
+
+        self.output_h = np.sum(self.hidden_sigma[-1] * self.output_weights) + self.output_bias_w
         self.output_sigma = 1/(1 + math.exp(-self.output_h))
 
     def compute_delta(self):
         self.output_delta = self.output_sigma * (1 - self.output_sigma) * (self.expected_output - self.output_sigma)
         for i, n in reversed(list(enumerate(self.num_neurons))):
-            for j in range(n):
-                if i == self.num_layers-1:
-                    self.hidden_delta[i][j] = self.hidden_sigma[i][j] * (1 - self.hidden_sigma[i][j]) * self.output_delta * self.output_weights[j]
-                else:
-                    for c in range(self.num_neurons[i+1]):
-                        self.hidden_delta[i][j] = self.hidden_sigma[i][j] * (1 - self.hidden_sigma[i][j]) * self.hidden_delta[i+1][c] * self.hidden_weights[i+1][c][j]
+            if i == self.num_layers-1:
+                self.hidden_delta[i] = self.hidden_sigma[i] * (1 - self.hidden_sigma[i]) * self.output_delta * self.output_weights
+            else:
+                self.hidden_delta[i] = self.hidden_sigma[i] * (1 - self.hidden_sigma[i]) * np.sum(np.transpose(self.hidden_delta[i+1] * np.transpose(self.hidden_weights[i+1][:])), axis=0)
 
     def update_weights(self):
         for i, n in enumerate(self.num_neurons):
-            for j in range(n):
-                if i == 0:
-                    for c in range(self.num_inputs):
-                        self.hidden_weights[i][j][c] += (self.learning_rate * self.hidden_delta[i][j]) * self.input[c]
+            if i == 0:
+                self.hidden_weights[i] = self.hidden_weights[i] + (self.learning_rate * self.hidden_delta[i]).reshape((len(self.hidden_delta[i]), 1)) * self.input
+            else:
+                self.hidden_weights[i] = self.hidden_weights[i] + (self.learning_rate * self.hidden_delta[i]).reshape((len(self.hidden_delta[i]), 1)) * self.hidden_sigma[i - 1]
 
-                else:
-                    for c in range(self.num_neurons[i-1]):
-                        self.hidden_weights[i][j][c] += (self.learning_rate * self.hidden_delta[i][j]) * self.hidden_sigma[i - 1][c]
-                self.bias_weights[i][j] += self.learning_rate * self.hidden_delta[i][j]
-
-        for j in range(self.num_neurons[-1]):
-            self.output_weights[j] += self.learning_rate * self.output_delta * self.hidden_sigma[-1][j]
+        self.bias_weights += self.learning_rate * self.hidden_delta
+        self.output_weights = self.output_weights + self.learning_rate * self.output_delta * self.hidden_sigma[-1]
         self.output_bias_w += self.learning_rate * self.output_delta
 
     def train_network(self):
@@ -165,20 +150,16 @@ class BackProp:
             self.compute_outputs()
             sum += (self.expected_output - self.output_sigma)**2
             num_of_patterns += 1
-        rmse = (sum / (2.0 * num_of_patterns))**0.5
-        np.append(self.RMSE, rmse)
-        print(rmse)
+        self.RMSE.append((sum / (2.0 * num_of_patterns))**0.5)
 
-    def test_network(self):
+    def test_network(self, ofile):
         tp = 0
         tn = 0
         fp = 0
         fn = 0
-        print('Testing Network')
         for i, self.input in enumerate(self.data.testFeatures):
             self.expected_output = self.data.testLabels[i]
             self.compute_outputs()
-
             if math.fabs(self.expected_output - self.output_sigma) > (self.RMSE[-1] + 0.01):
                 if self.expected_output == 1:
                     fn += 1
@@ -189,24 +170,70 @@ class BackProp:
                     tp += 1
                 else:
                     tn += 1
-        accuracy = (tp + tn) / (tp + tn + fp + fn)
-        print("Accuracy: ", accuracy)
+        self.accuracy = (tp + tn) / (tp + tn + fp + fn)
+        tpr = tp/(tp + fn)
+        ppv = tp/(tp + fp)
+        tnr = tn/(tn + fp)
+        print('Accuracy: ', self.accuracy, file=ofile)
+        print('TPR: ', tpr, file=ofile)
+        print('PPV: ', ppv, file=ofile)
+        print('TNR: ', tnr, file=ofile)
+        print('FScore: ', ppv*tpr/(ppv+tpr), file=ofile)
 
-    def print_RMSE(self):
-        print('Epoch #, RMSE:')
-        for i, rmse in enumerate(self.RMSE):
-            if (i % 100) == 0:
-                print(i, ', ', rmse)
+    def plot_RMSE(self, n):
+        plt.figure(n)
+        title = "Layers: %s, Accuracy: %.2f" % (str(self.num_neurons), self.accuracy)
+        plt.title(title)
+        plt.plot(range(self.number_epochs), self.RMSE, marker='+', linestyle='-', color='magenta', markersize=4)
+        plt.xlabel('Epoch #')
+        plt.ylabel('RMSE')
+        plt.savefig('images/rmse_'+str(n)+'.png')
+        plt.close()
 
-    def run(self):
+    def run(self, n, ofile):
         for i in range(self.number_epochs):
-            print('Epoch: ', i)
             self.train_network()
             self.validate_network()
-        # self.print_RMSE()
-        self.test_network()
+        self.test_network(ofile)
+        self.plot_RMSE(n)
 
+def main():
+    outfile = open('results.txt', 'w+')
+    d = Data('spambase.data')
 
-d = Data('spambase.data')
-b = BackProp(d, 0.3, 200, 3, [2,3,2])
-b.run()
+    layers = [ [10],
+               [30],
+               [65],
+               [58],
+               [100],
+               [10, 10],
+               [60, 40],
+               [30, 30],
+               [58, 58],
+               [58, 58, 58],
+               [60, 70, 80],
+               [30, 40, 30],
+               [60, 100, 60],
+               [15, 15, 15],
+               [10, 10, 10, 10],
+               [60, 70, 70, 60],
+               [60, 100, 40, 30],
+               [60, 40, 30, 50],
+               [10, 10, 10, 10, 10],
+               [60, 60, 60, 60, 60],
+               [60, 70, 100, 70, 60]]
+
+    epochs = [40, 100, 500, 1500, 3000, 5000, 10000]
+    lrate = [0.1, 0.2, 0.4, 0.6, 0.8, 0.9, 1]
+
+    for i, l in enumerate(layers):
+        for j, e in enumerate(epochs):
+            for k, lr in enumerate(lrate):
+                n = (i * len(epochs) + j) * len(lrate) + k
+                print('Problem %d' % n, file=outfile)
+                print('Testing Network %d' % n)
+                BackProp(d, lr, e, len(l), l).run(n, outfile)
+
+# d = Data('spambase.data')
+# BackProp(d, 0.1, 100, 1, [60]).run(1)
+main()
