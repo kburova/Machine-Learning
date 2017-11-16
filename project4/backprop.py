@@ -180,22 +180,26 @@ class BackProp:
         print('TNR: ', tnr, file=ofile)
         print('FScore: ', ppv*tpr/(ppv+tpr), file=ofile)
 
-    def plot_RMSE(self, n):
-        plt.figure(n)
-        title = "Layers: %s, LR: %.2f, Accuracy: %.2f" % (str(self.num_neurons), self.learning_rate, self.accuracy)
-        plt.title(title)
-        plt.plot(range(self.number_epochs), self.RMSE, linestyle='-', color='darkturquoise', linewidth=2.3)
-        plt.xlabel('Epoch #')
-        plt.ylabel('RMSE')
-        plt.savefig('images/rmse_'+str(n)+'.png')
-        plt.close()
+    def plot_RMSE(self, n, lr_num):
+        c=["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+        plt.figure(int(n/lr_num))
+        label = "LR: %.2f, Accuracy: %.2f" % (self.learning_rate, self.accuracy)
+        plt.plot(range(self.number_epochs), self.RMSE, linestyle='-', color=c[(n % lr_num)%10], linewidth=1.2, label=label)
+        if (n % lr_num) == (lr_num-1):
+            title = "Layers: %s" % str(self.num_neurons)
+            plt.title(title)
+            plt.xlabel('Epoch #')
+            plt.ylabel('RMSE')
+            plt.legend()
+            plt.savefig('images/rmse_'+str(int(n/lr_num))+'.png')
+            plt.close()
 
-    def run(self, n, ofile):
+    def run(self, n, lr_num, ofile):
         for i in range(self.number_epochs):
             self.train_network()
             self.validate_network()
         self.test_network(ofile)
-        self.plot_RMSE(n)
+        self.plot_RMSE(n, lr_num)
 
 def main():
     outfile = open('results.txt', 'w+')
@@ -223,7 +227,7 @@ def main():
                [60, 60, 60, 60, 60],
                [60, 70, 100, 70, 60]]
 
-    epochs = [6, 10, 30, 50, 100, 500, 1500, 3000, 5000, 10000]
+    epochs = [6, 10, 30, 60, 200, 800, 2000, 5000]
     lrate = [0.01, 0.1, 0.25, 0.4, 0.65, 0.8, 0.9, 1.0]
 
     for i, l in enumerate(layers):
@@ -233,7 +237,7 @@ def main():
                 print('Problem %d' % n, file=outfile)
                 print('Testing Network %d' % n)
                 try:
-                    BackProp(d, lr, e, len(l), l).run(n, outfile)
+                    BackProp(d, lr, e, len(l), l).run(n, len(lrate), outfile)
                 except OverflowError:
                     print('Overflow in layers combination %d, epochs = %d, and l. rate = %.2f' % (i, j, k), file=outfile)
                 except:
