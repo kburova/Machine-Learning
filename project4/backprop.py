@@ -48,7 +48,7 @@ class BackProp:
         self.output_delta = 0
         self.output_h = 0
         self.output_sigma = 0
-        self.output_bias_w = np.random.uniform(-0.01, 0.01, 1)
+        self.output_bias_w = np.random.uniform(-0.1, 0.1, 1)
         self.expected_output = 0
 
         self.input = np.array([])
@@ -58,7 +58,7 @@ class BackProp:
         self.hidden_weights = []
 
         # 1 dim array, num of elem = number of neurons in last layer
-        self.output_weights = np.random.uniform(-0.01, 0.01, self.num_neurons[-1])
+        self.output_weights = np.random.uniform(-0.1, 0.1, self.num_neurons[-1])
 
         # 2 dimensional arrays num_of_layers x num_of_neurons
         self.bias_weights = []
@@ -68,7 +68,7 @@ class BackProp:
 
         for i, n in enumerate(self.num_neurons):
             # set bias weights to random values
-            self.bias_weights.append(np.random.uniform(-0.01, 0.01, n))
+            self.bias_weights.append(np.random.uniform(-0.1, 0.1, n))
 
             # fill array with empty dimensions
             self.hidden_sigma.append(np.zeros(n))
@@ -81,7 +81,7 @@ class BackProp:
                     num_prev = self.num_inputs
                 else:
                     num_prev = self.num_neurons[i-1]
-                hid_w.append(np.random.uniform(-0.01, 0.01, num_prev))
+                hid_w.append(np.random.uniform(-0.1, 0.1, num_prev))
             self.hidden_weights.append(np.array(hid_w))
 
         self.bias_weights = np.array(self.bias_weights, dtype=object)
@@ -185,7 +185,9 @@ class BackProp:
         plt.figure(int(n/lr_num))
         label = "LR: %.2f, Accuracy: %.2f" % (self.learning_rate, self.accuracy)
         plt.plot(range(self.number_epochs), self.RMSE, linestyle='-', color=c[(n % lr_num)%10], linewidth=1.2, label=label)
+        print('Plot lr # %d' % int(n%lr_num))
         if (n % lr_num) == (lr_num-1):
+            print('Saving picture')
             title = "Layers: %s" % str(self.num_neurons)
             plt.title(title)
             plt.xlabel('Epoch #')
@@ -202,7 +204,7 @@ class BackProp:
         self.plot_RMSE(n, lr_num)
 
 def main():
-    outfile = open('results.txt', 'w+')
+    outfile = open('results.txt', 'w')
     d = Data('spambase.data')
 
     layers = [ [10],
