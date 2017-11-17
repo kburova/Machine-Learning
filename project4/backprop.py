@@ -37,6 +37,9 @@ class Data:
 
 class BackProp:
     def __init__(self, data, lr, ne, ln, nn):
+        self.epochs = np.array([6, 10, 30, 60, 200, 650, 1200, 2000, 5000])
+        self.performance = np.empty(shape=(len(self.epochs), 5), dtype=float)
+
         self.data = data
         self.learning_rate = lr
         self.number_epochs = ne
@@ -44,7 +47,6 @@ class BackProp:
         self.num_neurons = nn
         self.num_inputs = len(data.features[0])
         self.accuracy = 0.0
-
         self.output_delta = 0
         self.output_h = 0
         self.output_sigma = 0
@@ -152,7 +154,7 @@ class BackProp:
             num_of_patterns += 1
         self.RMSE.append((sum / (2.0 * num_of_patterns))**0.5)
 
-    def test_network(self, ofile):
+    def test_network(self, ofile, ep_num):
         tp = 0
         tn = 0
         fp = 0
@@ -174,21 +176,28 @@ class BackProp:
         tpr = tp/(tp + fn)
         ppv = tp/(tp + fp)
         tnr = tn/(tn + fp)
+        fscore = ppv*tpr/(ppv+tpr)
+
+        self.performance[ep_num] = [self.accuracy, tpr, ppv, tnr, fscore]
+
         print('Accuracy: ', self.accuracy, file=ofile)
         print('TPR: ', tpr, file=ofile)
         print('PPV: ', ppv, file=ofile)
         print('TNR: ', tnr, file=ofile)
-        print('FScore: ', ppv*tpr/(ppv+tpr), file=ofile)
+        print('FScore: ', fscore, file=ofile)
 
-    def plot_RMSE(self, n, lr_num):
-        c=["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
-        plt.figure(int(n/lr_num))
-        label = "LR: %.2f, Accuracy: %.2f" % (self.learning_rate, self.accuracy)
-        plt.plot(range(self.number_epochs), self.RMSE, linestyle='-', color=c[(n % lr_num)%10], linewidth=1.2, label=label)
-        print('Plot lr # %d' % int(n%lr_num))
+    def plot_rmse_performance(self, n, lr_num):
+        c = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+        label = "LR: %.2f" % self.learning_rate
+        print('Plot lr # %d' % int(n % lr_num))
+
+        plt.figure(0)
+        plt.plot(range(self.number_epochs), self.RMSE, linestyle='-', color=c[(n % lr_num)%10], linewidth=1.0,
+                 label=label)
         if (n % lr_num) == (lr_num-1):
-            print('Saving picture')
-            title = "Layers: %s" % str(self.num_neurons)
+            print('Saving picture 0')
+
+            title = "RMSE: Layers: %s" % str(self.num_neurons)
             plt.title(title)
             plt.xlabel('Epoch #')
             plt.ylabel('RMSE')
@@ -196,12 +205,29 @@ class BackProp:
             plt.savefig('images/rmse_'+str(int(n/lr_num))+'.png')
             plt.close()
 
+        plt.figure(1)
+        plt.plot(self.epochs, self.performance[:, 0], linestyle='-', color=c[(n % lr_num) % 10], linewidth=1.0,
+                 label=label)
+        if (n % lr_num) == (lr_num - 1):
+            print('Saving picture 1')
+
+            title = "Accuracy: Layers: %s" % str(self.num_neurons)
+            plt.title(title)
+            plt.xticks(self.epochs)
+            plt.xlabel('Epoch #')
+            plt.ylabel('Accuracy')
+            plt.legend()
+            plt.savefig('images/accuracy_' + str(int(n / lr_num)) + '.png')
+            plt.close()
+
     def run(self, n, lr_num, ofile):
+        e_num = 0
         for i in range(self.number_epochs):
             self.train_network()
             self.validate_network()
-        self.test_network(ofile)
-        self.plot_RMSE(n, lr_num)
+            if self.epochs[e_num] == i:
+                self.test_network(ofile, e_num)
+        self.plot_rmse_performance(n, lr_num)
 
 def main():
     outfile = open('results.txt', 'w')
@@ -229,22 +255,23 @@ def main():
                [60, 60, 60, 60, 60],
                [60, 70, 100, 70, 60]]
 
-    epochs = [6, 10, 30, 60, 200, 800, 2000, 5000]
+    # epochs = [6, 10, 30, 60, 200, 650, 1200, 2000, 5000, 10000]
+    e = 5000
     lrate = [0.01, 0.1, 0.25, 0.4, 0.65, 0.8, 0.9, 1.0]
 
     for i, l in enumerate(layers):
-        for j, e in enumerate(epochs):
-            for k, lr in enumerate(lrate):
-                n = (i * len(epochs) + j) * len(lrate) + k
-                print('Problem %d' % n, file=outfile)
-                print('Testing Network %d' % n)
-                try:
-                    BackProp(d, lr, e, len(l), l).run(n, len(lrate), outfile)
-                except OverflowError:
-                    print('Overflow in layers combination %d, epochs = %d, and l. rate = %.2f' % (i, j, k), file=outfile)
-                except:
-                    print('Some other error')
-                    raise
+        # for j, e in enumerate(epochs):
+        for k, lr in enumerate(lrate):
+            n = i * len(lrate) + k
+            print('Problem %d' % n, file=outfile)
+            print('Testing Layer %d and lrate %.2f' % (n, lr))
+            try:
+                BackProp(d, lr, e, len(l), l).run(n, len(lrate), outfile)
+            except OverflowError:
+                print('Overflow in layers combination %d, epochs = %d, and l. rate = %.2f' % (i, e, k), file=outfile)
+            except:
+                print('Some other error')
+                raise
     outfile.close()
 
 
