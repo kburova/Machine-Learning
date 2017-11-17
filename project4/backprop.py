@@ -7,6 +7,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import math
+import sys
 
 class Data:
     def __init__(self, filename):
@@ -255,23 +256,24 @@ def main():
                [60, 60, 60, 60, 60],
                [60, 70, 100, 70, 60]]
 
-    # epochs = [6, 10, 30, 60, 200, 650, 1200, 2000, 5000, 10000]
     e = 5000
     lrate = [0.01, 0.1, 0.25, 0.4, 0.65, 0.8, 0.9, 1.0]
 
-    for i, l in enumerate(layers):
+    # for i, l in enumerate(layers):
         # for j, e in enumerate(epochs):
-        for k, lr in enumerate(lrate):
-            n = i * len(lrate) + k
-            print('Problem %d' % n, file=outfile)
-            print('Testing Layer %d and lrate %.2f' % (n, lr))
-            try:
-                BackProp(d, lr, e, len(l), l).run(n, len(lrate), outfile)
-            except OverflowError:
-                print('Overflow in layers combination %d, epochs = %d, and l. rate = %.2f' % (i, e, k), file=outfile)
-            except:
-                print('Some other error')
-                raise
+    i = int(sys.argv[1])
+    l = layers[i]
+    for k, lr in enumerate(lrate):
+        n = i * len(lrate) + k
+        print('Problem %d' % n, file=outfile)
+        print('Testing Layer %d and lrate %.2f' % (n, lr))
+        try:
+            BackProp(d, lr, e, len(l), l).run(n, len(lrate), outfile)
+        except OverflowError:
+            print('Overflow in layers combination %d, epochs = %d, and l. rate = %.2f' % (i, e, k), file=outfile)
+        except:
+            print('Some other error')
+            raise
     outfile.close()
 
 
