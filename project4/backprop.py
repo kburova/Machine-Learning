@@ -14,14 +14,33 @@ class Data:
         data = np.genfromtxt(filename, delimiter=',')
         self.features = data[:, :-1]
         self.labels = data[:, [-1]]
+        self.Z = np.array([])
+
+        self.trainFeatures = np.array([])
+        self.validFeatures = np.array([])
+        self.testFeatures = np.array([])
+
+        self.trainLabels = np.array([])
+        self.validLabels = np.array([])
+        self.testFeatures = np.array([])
 
         # normalize data
         self.normalize()
 
-        # split data into training, validation and testing data
-        # make sure that tum type arrays are 1-dimensional
+    def normalize(self):
+        M = np.mean(self.features, axis=0)
+        D = np.sqrt(np.mean((self.features - M)**2, axis=0))
+
+        self.features = (self.features - M) / D
+
+    def reduce(self, k):
+        U, s, V = np.linalg.svd(np.array(self.features))
+        v = V[:, :k]
+        self.Z = np.matmul(self.features, v)
+
+    def split(self, features):
         self.trainFeatures, self.testFeatures, self.trainLabels, self.testLabels = train_test_split(
-            self.features, self.labels, test_size=0.5, random_state=26)
+            features, self.labels, test_size=0.5, random_state=26)
         self.trainLabels = self.trainLabels.ravel()
         self.testLabels = self.testLabels.ravel()
 
@@ -30,12 +49,6 @@ class Data:
         self.testLabels = self.testLabels.ravel()
         self.validLabels = self.validLabels.ravel()
 
-    def normalize(self):
-        M = np.mean(self.features, axis=0)
-        D = np.sqrt(np.mean((self.features - M)**2, axis=0))
-
-        self.features = (self.features - M) / D
-
 class BackProp:
     def __init__(self, data, lr, ne, ln, nn):
         self.data = data
@@ -43,7 +56,7 @@ class BackProp:
         self.number_epochs = ne
         self.num_layers = ln
         self.num_neurons = nn
-        self.num_inputs = len(data.features[0])
+        self.num_inputs = len(data.trainFeatures[0])
         self.accuracy = 0.0
 
         self.output_delta = 0
@@ -83,7 +96,6 @@ class BackProp:
         for i, n in enumerate(self.num_neurons):
             if i == 0:
                 self.hidden_h[i] = np.sum(self.hidden_weights[i] * self.input, axis=1)
-
             else:
                 self.hidden_h[i] = np.sum(self.hidden_weights[i] * self.hidden_sigma[i-1], axis=1)
             self.hidden_h[i] += self.bias_weights[i]
@@ -178,47 +190,39 @@ class BackProp:
             plt.xlabel('Epoch #')
             plt.ylabel('RMSE')
             plt.legend()
-            plt.savefig('images/rmse_'+str(int(n/lr_num))+'.png')
+            plt.savefig('images/pca_rmse_1'+str(int(n/lr_num))+'.png')
+            plt.close()
+
+    def plot_accuracy(self, e, a, n, lr_num):
+        c = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22",
+             "#17becf"]
+
+        plt.figure(1)
+        label = "LR:  %.2f" % self.learning_rate
+        plt.plot(e, a, linestyle='-', color=c[(n % lr_num)%10], linewidth=1.2, label=label )
+
+        if (n % lr_num) == (lr_num-1):
+            print('Saving picture')
+            title = "Layers: %s" % str(self.num_neurons)
+            plt.title(title)
+            plt.xlabel('Epoch #')
+            plt.ylabel('Accuracy')
+            plt.legend()
+            plt.savefig('images/pca_accuracy_1'+str(int(n/lr_num))+'.png')
             plt.close()
 
     def run(self, n, lr_num, ofile):
+        j = 0
+        # last value has to be less than # epochs
+        epochs_check = [10, 50, 100, 150, 200, 250, 300, 350, 400, 450, 499]
+        accuracy = []
         for i in np.arange(self.number_epochs):
+            print('E', i)
             self.train_network()
             self.validate_network()
-        self.test_network(ofile)
+            if epochs_check[j] == i:
+                self.test_network(ofile)
+                accuracy.append(self.accuracy)
+                j += 1
         self.plot_RMSE(n, lr_num)
-
-def main():
-    outfile = open('results.txt', 'w')
-    d = Data('spambase.data')
-
-    layers = [[15],
-              [65],
-              [100],
-              [70, 70],
-              [30, 30],
-              [60, 70, 80],
-              [30, 40, 30],
-              [15, 15, 15],
-              [10, 10, 10, 10],
-              [60, 70, 70, 60],
-              [60, 40, 30, 50],
-              [15, 15, 15, 15, 15],
-              [60, 70, 100, 70, 60]]
-    epochs = 500
-    lrate = [0.01, 0.1, 0.25, 0.4, 0.65, 0.85, 1.0]
-
-    for i, l in enumerate(layers):
-        print('Testing Network %d' % i)
-        for k, lr in enumerate(lrate):
-            n = i * len(lrate) + k
-            print('Problem %d\n' % n, file=outfile)
-            try:
-                BackProp(d, lr, epochs, len(l), l).run(n, len(lrate), outfile)
-            except OverflowError:
-                print('Overflow in layers combination %d, epochs = %d, and l. rate = %.2f' % (i, epochs, k), file=outfile)
-
-    outfile.close()
-
-
-main()
+        self.plot_accuracy(epochs_check,accuracy,n, lr_num)
