@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from scipy.special import expit
 import matplotlib.pyplot as plt
 import math
+import sys
 
 class Data:
     def __init__(self, filename):
@@ -51,6 +52,9 @@ class Data:
 
 class BackProp:
     def __init__(self, data, lr, ne, ln, nn):
+        self.epochs = np.array([6, 10, 30, 60, 200, 650, 1200, 2000, 5000])
+        self.performance = np.empty(shape=(len(self.epochs), 5), dtype=float)
+
         self.data = data
         self.learning_rate = lr
         self.number_epochs = ne
@@ -58,7 +62,6 @@ class BackProp:
         self.num_neurons = nn
         self.num_inputs = len(data.trainFeatures[0])
         self.accuracy = 0.0
-
         self.output_delta = 0
         self.output_h = 0
         self.output_sigma = 0
@@ -137,7 +140,7 @@ class BackProp:
             sum += (self.expected_output - self.output_sigma)**2
         self.RMSE.append((sum / (2.0 * len(self.data.validFeatures)))**0.5)
 
-    def test_network(self, ofile):
+    def test_network(self, ofile, ep_num):
         tp = 0
         tn = 0
         fp = 0
@@ -156,6 +159,7 @@ class BackProp:
                 else:
                     tn += 1
         self.accuracy = (tp + tn) / (tp + tn + fp + fn)
+
         try:
             tpr = tp/(tp + fn)
         except ZeroDivisionError:
@@ -183,9 +187,11 @@ class BackProp:
         label = "LR: %.2f, Accuracy: %.2f" % (self.learning_rate, self.accuracy)
         plt.plot(range(self.number_epochs), self.RMSE, linestyle='-', color=c[(n % lr_num)%10], linewidth=1.2, label=label)
 
+
         if (n % lr_num) == (lr_num-1):
-            print('Saving picture')
-            title = "Layers: %s" % str(self.num_neurons)
+            print('Saving picture 0')
+
+            title = "RMSE: Layers: %s" % str(self.num_neurons)
             plt.title(title)
             plt.xlabel('Epoch #')
             plt.ylabel('RMSE')
@@ -211,6 +217,21 @@ class BackProp:
             plt.savefig('images/pca_accuracy_1'+str(int(n/lr_num))+'.png')
             plt.close()
 
+        plt.figure(1)
+        plt.plot(self.epochs, self.performance[:, 0], linestyle='-', color=c[(n % lr_num) % 10], linewidth=1.0,
+                 label=label)
+        if (n % lr_num) == (lr_num - 1):
+            print('Saving picture 1')
+
+            title = "Accuracy: Layers: %s" % str(self.num_neurons)
+            plt.title(title)
+            plt.xticks(self.epochs)
+            plt.xlabel('Epoch #')
+            plt.ylabel('Accuracy')
+            plt.legend()
+            plt.savefig('images/accuracy_' + str(int(n / lr_num)) + '.png')
+            plt.close()
+
     def run(self, n, lr_num, ofile):
         j = 0
         # last value has to be less than # epochs
@@ -226,3 +247,4 @@ class BackProp:
                 j += 1
         self.plot_RMSE(n, lr_num)
         self.plot_accuracy(epochs_check,accuracy,n, lr_num)
+
